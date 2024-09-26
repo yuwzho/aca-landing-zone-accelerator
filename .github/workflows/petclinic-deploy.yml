@@ -80,10 +80,10 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az acr build -t spring-petclinic-vets-service:${{ env.IMAGE_TAG }} \
-              -r ${{ REGISTRYNAME_ACR }} src/spring-petclinic-vets-service/target/docker \
+              -r ${{ env.REGISTRYNAME_ACR }} src/spring-petclinic-vets-service/target/docker \
               --build-arg ARTIFACT_NAME=vets-service-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
-              --agent-pool ${{ RESOURCENAME_AGENTPOOL }}
+              --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }}
 
       - name: Queue Build for application visits-service
         uses: azure/cli@v2
@@ -91,10 +91,10 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az acr build -t spring-petclinic-visits-service:${{ env.IMAGE_TAG }} \
-              -r ${{ REGISTRYNAME_ACR }} src/spring-petclinic-visits-service/target/docker \
+              -r ${{ env.REGISTRYNAME_ACR }} src/spring-petclinic-visits-service/target/docker \
               --build-arg ARTIFACT_NAME=visits-service-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
-              --agent-pool ${{ RESOURCENAME_AGENTPOOL }}
+              --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }}
 
       - name: Queue Build for application customers-service
         uses: azure/cli@v2
@@ -102,10 +102,10 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az acr build -t spring-petclinic-customers-service:${{ env.IMAGE_TAG }} \
-              -r ${{ REGISTRYNAME_ACR }} src/spring-petclinic-customers-service/target/docker \
+              -r ${{ env.REGISTRYNAME_ACR }} src/spring-petclinic-customers-service/target/docker \
               --build-arg ARTIFACT_NAME=customers-service-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
-              --agent-pool ${{ RESOURCENAME_AGENTPOOL }}
+              --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }}
 
       - name: Queue Build for application api-gateway
         uses: azure/cli@v2
@@ -113,16 +113,16 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az acr build -t spring-petclinic-api-gateway:${{ env.IMAGE_TAG }} \
-              -r ${{ REGISTRYNAME_ACR }} src/spring-petclinic-api-gateway/target/docker \
+              -r ${{ env.REGISTRYNAME_ACR }} src/spring-petclinic-api-gateway/target/docker \
               --build-arg ARTIFACT_NAME=api-gateway-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
-              --agent-pool ${{ RESOURCENAME_AGENTPOOL }}
+              --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }}
 
       - name: Deploy image to Azure Container Apps
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ RESOURCENAME_RESOURCEGROUP_SPOKE }}
+          resourceGroupName: ${{ env.RESOURCENAME_RESOURCEGROUP_SPOKE }}
           template: modules/petclinic.bicep
-          parameters: 'managedEnvironmentsName=${ ENVIRONMENT_NAME }} eurekaId=${{ RESOURCEID_EUREKA }} configServerId=${{ RESOURCEID_CONFIGSERVER }} mysqlDBId=${{ RESOURCEID_MYSQL_DATABASE }} mysqlUserAssignedIdentityClientId=${{ RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID }} acrRegistry=${{ LOGINSERVER_ACR }} imageTag=${{ env.IMAGE_TAG }} acrIdentityId=${{ RESOURCEID_IDENTITY_ACR }}'
+          parameters: 'managedEnvironmentsName=${{ env.ENVIRONMENT_NAME }} eurekaId=${{ env.RESOURCEID_EUREKA }} configServerId=${{ env.RESOURCEID_CONFIGSERVER }} mysqlDBId=${{ env.RESOURCEID_MYSQL_DATABASE }} mysqlUserAssignedIdentityClientId=${{ env.RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID }} acrRegistry=${{ env.LOGINSERVER_ACR }} imageTag=${{ env.IMAGE_TAG }} acrIdentityId=${{ env.RESOURCEID_IDENTITY_ACR }}'
           failOnStdErr: false
