@@ -72,7 +72,7 @@ jobs:
             echo RESOURCEID_CONFIGSERVER: $RESOURCEID_CONFIGSERVER
 
       - name: Prepare image version variable
-        run: export IMAGE_TAG=ga-${{ github.run_number }}-$(date +%Y%m%d%H%M%S)
+        run: echo "IMAGE_TAG=ga-${{ github.run_number }}-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
       - name: Queue Build for application vets-service
         uses: azure/cli@v2
