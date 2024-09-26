@@ -72,6 +72,9 @@ jobs:
         run: mvn clean package
         working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src
 
+      - name: show directory
+        run: ls -la src/spring-petclinic-api-gateway/target/
+
       - name: Queue Build for application vets-service
         uses: azure/cli@v2
         with:
