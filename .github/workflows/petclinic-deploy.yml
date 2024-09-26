@@ -24,6 +24,7 @@ jobs:
       contents: read
       packages: read
       id-token: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -107,7 +108,7 @@ jobs:
               --build-arg  EXPOSED_PORT=8080 \
               --agent-pool ${{ RESOURCENAME_AGENTPOOL }}
 
-       - name: Queue Build for application api-gateway
+      - name: Queue Build for application api-gateway
         uses: azure/cli@v2
         with:
           azcliversion: latest
@@ -119,10 +120,10 @@ jobs:
               --agent-pool ${{ RESOURCENAME_AGENTPOOL }}
 
       - name: Deploy image to Azure Container Apps
-      uses: azure/arm-deploy@v1
-      with:
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ RESOURCENAME_RESOURCEGROUP_SPOKE }}
-        template: modules/petclinic.bicep
-        parameters: 'managedEnvironmentsName=${ ENVIRONMENT_NAME }} eurekaId=${{ RESOURCEID_EUREKA }} configServerId=${{ RESOURCEID_CONFIGSERVER }} mysqlDBId=${{ RESOURCEID_MYSQL_DATABASE }} mysqlUserAssignedIdentityClientId=${{ RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID }} acrRegistry=${{ LOGINSERVER_ACR }} imageTag=${{ IMAGE_TAG }} acrIdentityId=${{ RESOURCEID_IDENTITY_ACR }}'
-        failOnStdErr: false
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ RESOURCENAME_RESOURCEGROUP_SPOKE }}
+          template: modules/petclinic.bicep
+          parameters: 'managedEnvironmentsName=${ ENVIRONMENT_NAME }} eurekaId=${{ RESOURCEID_EUREKA }} configServerId=${{ RESOURCEID_CONFIGSERVER }} mysqlDBId=${{ RESOURCEID_MYSQL_DATABASE }} mysqlUserAssignedIdentityClientId=${{ RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID }} acrRegistry=${{ LOGINSERVER_ACR }} imageTag=${{ IMAGE_TAG }} acrIdentityId=${{ RESOURCEID_IDENTITY_ACR }}'
+          failOnStdErr: false
