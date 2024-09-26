@@ -35,16 +35,6 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-      
-      - name: Build Jar with Maven
-        run: mvn clean package
-        working-directory: src
-
       - name: Prepare env variables
         uses: azure/CLI@v2
         with:
@@ -73,6 +63,16 @@ jobs:
 
       - name: Prepare image version variable
         run: echo "IMAGE_TAG=ga-${{ github.run_number }}-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      
+      - name: Build Jar with Maven
+        run: mvn clean package
+        working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src
 
       - name: Queue Build for application vets-service
         uses: azure/cli@v2
