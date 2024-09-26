@@ -33,22 +33,22 @@ jobs:
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 
       - name: Prepare env variables
         uses: azure/CLI@v2
         with:
           azcliversion: latest
           inlineScript: |
-            export ENVIRONMENT_NAME=$(az deployment group show -n acalza01-appplat -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.outputs.containerAppsEnvironmentName.value -o tsv)
-            export RESOURCEID_IDENTITY_ACR=$(az deployment group show -n acalza01-dependencies -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.outputs.containerRegistryUserAssignedIdentityId.value -o tsv)
-            export REGISTRYNAME_ACR=$(az deployment group show -n acalza01-dependencies -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.outputs.containerRegistryName.value -o tsv)
-            export LOGINSERVER_ACR=$(az deployment group show -n acalza01-dependencies -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.outputs.containerRegistryLoginServer.value -o tsv)
-            export RESOURCENAME_AGENTPOOL=$(az deployment group show -n acalza01-dependencies -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.outputs.containerRegistryAgentPoolName.value -o tsv)
-            export RESOURCEID_EUREKA=$(az deployment group show -n acalza01-appplat-java -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.outputs.eurekaId.value -o tsv)    
-            export RESOURCEID_CONFIGSERVER=$(az deployment group show -n acalza01-appplat-java -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.outputs.configServerId.value -o tsv)
-            export RESOURCEID_MYSQL_DATABASE=$(az deployment group show -n acalza01-appplat-java -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.outputs.databaseId.value -o tsv)
-            export RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID=$(az deployment group show -n acalza01-appplat-java -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.outputs.userAssignedIdentityClientId.value -o tsv)
+            export ENVIRONMENT_NAME=$(az deployment group show -n acalza01-appplat -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.containerAppsEnvironmentName.value -o tsv)
+            export RESOURCEID_IDENTITY_ACR=$(az deployment group show -n acalza01-dependencies -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.containerRegistryUserAssignedIdentityId.value -o tsv)
+            export REGISTRYNAME_ACR=$(az deployment group show -n acalza01-dependencies -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.containerRegistryName.value -o tsv)
+            export LOGINSERVER_ACR=$(az deployment group show -n acalza01-dependencies -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.containerRegistryLoginServer.value -o tsv)
+            export RESOURCENAME_AGENTPOOL=$(az deployment group show -n acalza01-dependencies -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.containerRegistryAgentPoolName.value -o tsv)
+            export RESOURCEID_EUREKA=$(az deployment group show -n acalza01-appplat-java -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.eurekaId.value -o tsv)    
+            export RESOURCEID_CONFIGSERVER=$(az deployment group show -n acalza01-appplat-java -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.configServerId.value -o tsv)
+            export RESOURCEID_MYSQL_DATABASE=$(az deployment group show -n acalza01-appplat-java -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.databaseId.value -o tsv)
+            export RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID=$(az deployment group show -n acalza01-appplat-java -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.userAssignedIdentityClientId.value -o tsv)
             echo ENVIRONMENT_NAME: $ENVIRONMENT_NAME && \
             echo RESOURCEID_IDENTITY_ACR: $RESOURCEID_IDENTITY_ACR && \
             echo REGISTRYNAME_ACR: $REGISTRYNAME_ACR && \
@@ -119,8 +119,8 @@ jobs:
       - name: Deploy image to Azure Container Apps
         uses: azure/arm-deploy@v1
         with:
-          subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP }}
+          subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ vars.AZURE_RESOURCE_GROUP }}
           template: modules/petclinic.bicep
           parameters: 'managedEnvironmentsName=${{ env.ENVIRONMENT_NAME }} eurekaId=${{ env.RESOURCEID_EUREKA }} configServerId=${{ env.RESOURCEID_CONFIGSERVER }} mysqlDBId=${{ env.RESOURCEID_MYSQL_DATABASE }} mysqlUserAssignedIdentityClientId=${{ env.RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID }} acrRegistry=${{ env.LOGINSERVER_ACR }} imageTag=${{ env.IMAGE_TAG }} acrIdentityId=${{ env.RESOURCEID_IDENTITY_ACR }}'
           failOnStdErr: false
