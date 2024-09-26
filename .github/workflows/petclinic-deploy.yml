@@ -85,7 +85,7 @@ jobs:
               --build-arg ARTIFACT_NAME=vets-service-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
               --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }}
-           working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application
+          working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application
 
       - name: Queue Build for application visits-service
         uses: azure/cli@v2
