@@ -9,8 +9,6 @@ on:
     paths:
       - 'scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src/**'
       - '!scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src/**.md'
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 defaults:
   run:
