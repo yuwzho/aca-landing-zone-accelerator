@@ -84,8 +84,7 @@ jobs:
               -r ${{ env.REGISTRYNAME_ACR }} src/spring-petclinic-vets-service/target/docker \
               --build-arg ARTIFACT_NAME=vets-service-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
-              --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }}
-          working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application
+              --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }} --debug
 
       - name: Queue Build for application visits-service
         uses: azure/cli@v2
