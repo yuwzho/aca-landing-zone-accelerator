@@ -73,7 +73,7 @@ jobs:
         working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src
 
       - name: show directory
-        run: ls -la src/spring-petclinic-api-gateway/target/
+        run: ls -la src/spring-petclinic-vets-service/target/
 
       - name: Queue Build for application vets-service
         uses: azure/cli@v2
@@ -85,6 +85,7 @@ jobs:
               --build-arg ARTIFACT_NAME=vets-service-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
               --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }}
+        working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application
 
       - name: Queue Build for application visits-service
         uses: azure/cli@v2
