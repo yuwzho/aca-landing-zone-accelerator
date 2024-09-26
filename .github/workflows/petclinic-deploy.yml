@@ -49,15 +49,15 @@ jobs:
             export RESOURCEID_CONFIGSERVER=$(az deployment group show -n acalza01-appplat-java -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.configServerId.value -o tsv)
             export RESOURCEID_MYSQL_DATABASE=$(az deployment group show -n acalza01-appplat-java -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.databaseId.value -o tsv)
             export RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID=$(az deployment group show -n acalza01-appplat-java -g ${{ vars.AZURE_RESOURCE_GROUP }} --query properties.outputs.userAssignedIdentityClientId.value -o tsv)
-            echo ENVIRONMENT_NAME: $ENVIRONMENT_NAME && \
-            echo RESOURCEID_IDENTITY_ACR: $RESOURCEID_IDENTITY_ACR && \
-            echo REGISTRYNAME_ACR: $REGISTRYNAME_ACR && \
-            echo LOGINSERVER_ACR: $LOGINSERVER_ACR && \
-            echo RESOURCENAME_AGENTPOOL: $RESOURCENAME_AGENTPOOL && \
-            echo RESOURCEID_MYSQL_DATABASE: $RESOURCEID_MYSQL_DATABASE && \
-            echo RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID: $RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID && \
-            echo RESOURCEID_EUREKA: $RESOURCEID_EUREKA && \
-            echo RESOURCEID_CONFIGSERVER: $RESOURCEID_CONFIGSERVER
+            echo ENVIRONMENT_NAME=$ENVIRONMENT_NAME && \
+            echo RESOURCEID_IDENTITY_ACR=$RESOURCEID_IDENTITY_ACR && \
+            echo REGISTRYNAME_ACR=$REGISTRYNAME_ACR && \
+            echo LOGINSERVER_ACR=$LOGINSERVER_ACR && \
+            echo RESOURCENAME_AGENTPOOL=$RESOURCENAME_AGENTPOOL && \
+            echo RESOURCEID_MYSQL_DATABASE=$RESOURCEID_MYSQL_DATABASE && \
+            echo RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID=$RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID && \
+            echo RESOURCEID_EUREKA=$RESOURCEID_EUREKA && \
+            echo RESOURCEID_CONFIGSERVER=$RESOURCEID_CONFIGSERVER >> $GITHUB_ENV
 
       - name: Prepare image version variable
         run: echo "IMAGE_TAG=ga-${{ github.run_number }}-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
