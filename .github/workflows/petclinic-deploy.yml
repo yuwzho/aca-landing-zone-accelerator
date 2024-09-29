@@ -11,10 +11,6 @@ on:
       - '!scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src/**.md'
       - '.github/workflows/petclinic-deploy.yml'
 
-defaults:
-  run:
-    working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   deploy:
@@ -23,7 +19,6 @@ jobs:
       contents: read
       packages: read
       id-token: write
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -71,9 +66,6 @@ jobs:
       - name: Build Jar with Maven
         run: mvn clean package
         working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src
-
-      - name: show directory
-        run: pwd
 
       - name: Queue Build for application vets-service
         uses: azure/cli@v2
@@ -125,6 +117,6 @@ jobs:
         with:
           subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ vars.AZURE_RESOURCE_GROUP }}
-          template: modules/petclinic.bicep
+          template: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/modules/petclinic.bicep
           parameters: 'managedEnvironmentsName=${{ env.ENVIRONMENT_NAME }} eurekaId=${{ env.RESOURCEID_EUREKA }} configServerId=${{ env.RESOURCEID_CONFIGSERVER }} mysqlDBId=${{ env.RESOURCEID_MYSQL_DATABASE }} mysqlUserAssignedIdentityClientId=${{ env.RESOURCEID_MYSQL_USERASSIGNEDIDENTITY_CLIENTID }} acrRegistry=${{ env.LOGINSERVER_ACR }} imageTag=${{ env.IMAGE_TAG }} acrIdentityId=${{ env.RESOURCEID_IDENTITY_ACR }}'
           failOnStdErr: false
