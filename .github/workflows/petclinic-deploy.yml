@@ -77,13 +77,12 @@ jobs:
 
       - name: Queue Build for application vets-service
         uses: azure/cli@v2
-        working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application
         with:
           azcliversion: latest
           inlineScript: |
             pwd && \
             az acr build -t spring-petclinic-vets-service:${{ env.IMAGE_TAG }} \
-              -r ${{ env.REGISTRYNAME_ACR }} ${{ github.workspace }}/src/spring-petclinic-vets-service/target/docker \
+              -r ${{ env.REGISTRYNAME_ACR }} scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src/spring-petclinic-vets-service/target/docker \
               --build-arg ARTIFACT_NAME=vets-service-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
               --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }} --debug
@@ -94,7 +93,7 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az acr build -t spring-petclinic-visits-service:${{ env.IMAGE_TAG }} \
-              -r ${{ env.REGISTRYNAME_ACR }} src/spring-petclinic-visits-service/target/docker \
+              -r ${{ env.REGISTRYNAME_ACR }} scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src/spring-petclinic-visits-service/target/docker \
               --build-arg ARTIFACT_NAME=visits-service-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
               --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }}
@@ -105,7 +104,7 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az acr build -t spring-petclinic-customers-service:${{ env.IMAGE_TAG }} \
-              -r ${{ env.REGISTRYNAME_ACR }} src/spring-petclinic-customers-service/target/docker \
+              -r ${{ env.REGISTRYNAME_ACR }} scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src/spring-petclinic-customers-service/target/docker \
               --build-arg ARTIFACT_NAME=customers-service-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
               --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }}
@@ -116,7 +115,7 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az acr build -t spring-petclinic-api-gateway:${{ env.IMAGE_TAG }} \
-              -r ${{ env.REGISTRYNAME_ACR }} src/spring-petclinic-api-gateway/target/docker \
+              -r ${{ env.REGISTRYNAME_ACR }} scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src/spring-petclinic-api-gateway/target/docker \
               --build-arg ARTIFACT_NAME=api-gateway-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
               --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }}
