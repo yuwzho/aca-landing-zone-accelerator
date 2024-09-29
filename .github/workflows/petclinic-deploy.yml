@@ -73,7 +73,7 @@ jobs:
         working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src
 
       - name: show directory
-        run: echo ${{ github.workspace }}
+        run: pwd
 
       - name: Queue Build for application vets-service
         uses: azure/cli@v2
@@ -82,6 +82,7 @@ jobs:
           workingFolder: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application
           azcliversion: latest
           inlineScript: |
+            pwd && \
             az acr build -t spring-petclinic-vets-service:${{ env.IMAGE_TAG }} \
               -r ${{ env.REGISTRYNAME_ACR }} ${{ github.workspace }}/src/spring-petclinic-vets-service/target/docker \
               --build-arg ARTIFACT_NAME=vets-service-3.0.1 \
