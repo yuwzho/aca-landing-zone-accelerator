@@ -81,7 +81,7 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az acr build -t spring-petclinic-vets-service:${{ env.IMAGE_TAG }} \
-              -r ${{ env.REGISTRYNAME_ACR }} src/spring-petclinic-vets-service/target/docker \
+              -r ${{ env.REGISTRYNAME_ACR }} ${{ github.workspace }}/src/spring-petclinic-vets-service/target/docker \
               --build-arg ARTIFACT_NAME=vets-service-3.0.1 \
               --build-arg  EXPOSED_PORT=8080 \
               --agent-pool ${{ env.RESOURCENAME_AGENTPOOL }} --debug
