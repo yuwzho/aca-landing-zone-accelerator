@@ -77,9 +77,8 @@ jobs:
 
       - name: Queue Build for application vets-service
         uses: azure/cli@v2
+        working-directory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application
         with:
-          workingDirectory: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application
-          workingFolder: scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application
           azcliversion: latest
           inlineScript: |
             pwd && \
