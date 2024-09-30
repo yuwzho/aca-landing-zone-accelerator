@@ -5,7 +5,7 @@ on:
   # When you directly push in the main branch
   push:   
     branches: 
-      - 'pipeline'
+      - '[Your-Release-Branch-Name]'
     paths:
       - 'scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src/**'
       - '!scenarios/aca-internal/bicep/sample-apps/cloud-foundry-spring-boot-application/src/**.md'
